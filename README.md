@@ -18,12 +18,16 @@ The way of initializing the embedding layer of each network can affect the accur
 
 # LSTM 
 
-The first layer in this architecture is an *embedding* layer, which maps each (one-hot encoded) word index to a vector by a linear transformation. Thus each document vector is mapped to a sequence of output vectors via an embedding matrix We (which is learned during training). The output of the embedding layer is fed into a *bidirectional LSTM* layer with 100 dimensional outputs. The eventual 5-dimensional prediction is generated with a fully connected layer. This network is optimized with stochastic gradient descent using the cross entropy loss. We also use l2 regularization in all layers.
+The first layer in this architecture is an *embedding* layer, which maps each (one-hot encoded) word index to a vector by a linear transformation. Thus each document vector is mapped to a sequence of output vectors via an embedding matrix We (which is learned during training). The output of the embedding layer is fed into a *bidirectional LSTM* layer with 100 units (in each direction). The 5-dimensional output is then obtained with a fully connected layer. This network is optimized with stochastic gradient descent using the cross entropy loss. We also use l2 regularization in all layers.
 
-There are 1,442,005 trainable weights in the architecture, of which the large majority resides in the embedding layer.
+Using a doc length of 300 words and an embedding dimensionality equal to 200, we obtain a model architecture with 1,442,005 trainable weights, of which the large majority resides in the embedding layer.
+![model](/images/lstm_model.png)
 
 
 # Hierarchical Attention Network
+
+Liao
+![model](/images/hatt_model.png)
 
 # Performance
 
@@ -36,3 +40,5 @@ Order docs by number of words
 
 GPU Theano
 
+If you get ResourceExhaustedError, try decreasing BATCH_SIZE. This error could arise due to GPU memory limitations.
+Tensorflow automatically uses several cores and one GPU of the DSVM. 
