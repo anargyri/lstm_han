@@ -21,12 +21,19 @@ The way of initializing the embedding layer of each network can affect the accur
 The first layer in this architecture is an *embedding* layer, which maps each (one-hot encoded) word index to a vector by a linear transformation. Thus each document vector is mapped to a sequence of output vectors via an embedding matrix We (which is learned during training). The output of the embedding layer is fed into a *bidirectional LSTM* layer with 100 units (in each direction). The 5-dimensional output is then obtained with a fully connected layer. This network is optimized with stochastic gradient descent using the cross entropy loss. We also use l2 regularization in all layers.
 
 Using a doc length of 300 words and an embedding dimensionality equal to 200, we obtain a model architecture with 1,442,005 trainable weights, of which the large majority resides in the embedding layer.
+
 ![model](/images/lstm_model.png)
 
 
 # Hierarchical Attention Network
 
-Liao
+This is the architecture proposed in 
+[Hierarchical Attention Networks for Document Classiﬁcation, Yang, Yang, Dyer, He, Smola & Hovy, 2016](https://www.cs.cmu.edu/~diyiy/docs/naacl16.pdf). One of its main features is the hierarchical structure, which consists of two levels of GRU layers, one for the sequence of words in each sentence, the second for the sequence of sentences in each document. Another feature of the architecture is that it uses an *attention* layer at both the sentence and word levels. The attention mechanism is the one proposed in [Bahdanau, Cho & Bengio, 2014](https://arxiv.org/pdf/1409.0473.pdf) and allows for weighting words in each sentence (and sentences in each document) with different degrees of importance. 
+![han](/images/hatt.png)
+
+We have implemented the Hierarchical Attention Network in Keras and Theano by adapting 
+[Richard Liao's implementation](https://github.com/richliao/textClassifier/blob/master/textClassifierHATT.py).
+We use a sentence length of 100 words and a document length of 30 sentences. This yields an architecture with 4,141,705 trainable weights.
 ![model](/images/hatt_model.png)
 
 # Performance
