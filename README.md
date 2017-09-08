@@ -28,12 +28,12 @@ Using a doc length of 300 words and an embedding dimensionality equal to 200, we
 # Hierarchical Attention Network
 
 This is the architecture proposed in 
-[Hierarchical Attention Networks for Document Classiﬁcation, Yang, Yang, Dyer, He, Smola & Hovy, 2016](https://www.cs.cmu.edu/~diyiy/docs/naacl16.pdf). One of its main features is the hierarchical structure, which consists of two levels of GRU layers, one for the sequence of words in each sentence, the second for the sequence of sentences in each document. Another feature of the architecture is that it uses an *attention* layer at both the sentence and word levels. The attention mechanism is the one proposed in [Bahdanau, Cho & Bengio, 2014](https://arxiv.org/pdf/1409.0473.pdf) and allows for weighting words in each sentence (and sentences in each document) with different degrees of importance. 
+[Hierarchical Attention Networks for Document Classiﬁcation, Yang et al. 2016](https://www.cs.cmu.edu/~diyiy/docs/naacl16.pdf). One of its main features is the hierarchical structure, which consists of two levels of bidirectional GRU layers, one for the sequence of words in each sentence, the second for the sequence of sentences in each document. Another feature of the architecture is that it uses an *attention* layer at both the sentence and word levels. The attention mechanism is the one proposed in [Bahdanau et al. 2014](https://arxiv.org/pdf/1409.0473.pdf) and allows for weighting words in each sentence (and sentences in each document) with different degrees of importance. 
 ![han](/images/hatt.jpg)
 
 We have implemented the Hierarchical Attention Network in Keras and Theano by adapting 
 [Richard Liao's implementation](https://github.com/richliao/textClassifier/blob/master/textClassifierHATT.py).
-We use a sentence length of 100 words and a document length of 30 sentences. This yields an architecture with 4,141,705 trainable weights.
+We use a sentence length of 100 words and a document length of 30 sentences. The embeding dimensionality is set to 200 and the number of  GRU units to 50. We also use l2 regularization in all layers. This yields an architecture with 4,141,705 trainable weights.
 ![model](/images/hatt_model.png)
 
 # Performance
