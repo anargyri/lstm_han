@@ -28,22 +28,26 @@ Using a doc length of 300 words and an embedding dimensionality equal to 200, we
 # Hierarchical Attention Network
 
 This is the architecture proposed in 
-[Hierarchical Attention Networks for Document Classiﬁcation, Yang et al. 2016](https://www.cs.cmu.edu/~diyiy/docs/naacl16.pdf). One of its main features is the hierarchical structure, which consists of two levels of bidirectional GRU layers, one for the sequence of words in each sentence, the second for the sequence of sentences in each document. Another feature of the architecture is that it uses an *attention* layer at both the sentence and word levels. The attention mechanism is the one proposed in [Bahdanau et al. 2014](https://arxiv.org/pdf/1409.0473.pdf) and allows for weighting words in each sentence (and sentences in each document) with different degrees of importance. 
+[Hierarchical Attention Networks for Document Classiﬁcation, Yang et al. 2016](https://www.cs.cmu.edu/~diyiy/docs/naacl16.pdf). One of its main features is the hierarchical structure, which consists of two levels of bidirectional GRU layers, one for the sequence of words in each sentence, the second for the sequence of sentences in each document. Another feature of the architecture is that it uses an *attention* layer at both the sentence and word levels. The attention mechanism is the one proposed in [Bahdanau et al. 2014](https://arxiv.org/pdf/1409.0473.pdf) and allows for weighting words in each sentence (and sentences in each document) with different degrees of importance according to the context. 
 ![han](/images/hatt.jpg)
 
 We have implemented the Hierarchical Attention Network in Keras and Theano by adapting 
 [Richard Liao's implementation](https://github.com/richliao/textClassifier/blob/master/textClassifierHATT.py).
-We use a sentence length of 100 words and a document length of 30 sentences. The embeding dimensionality is set to 200 and the number of  GRU units to 50. We also use l2 regularization in all layers. This yields an architecture with 4,141,705 trainable weights.
+We use a sentence length of 100 words and a document length of 30 sentences. We set the embedding, context and GRU dimensionalities according to the Hierarchical Attention Network paper. We also follow other choices from this paper, that is, initialize the embedding with word2vec; optimize with SGD and momentum; and reorder the documents in the training batches by number of sentences. We also opt to use l2 regularization in all layers. We thus obtain an architecture with 4,141,705 trainable weights.
+
 ![model](/images/hatt_model.png)
+
+The second layer distributes the following model to all the sentences:
+
+![sent_model](/images/hatt_model_sent.png)
 
 # Performance
 
+We have not fine tuned the hyperparameters, but just tried a few values as an indication. With LSTM we obtain a classification accuracy of 54.7% and with the hierarchical attention network we obtain 59%. However, the latter takes about 10 hours per epoch to train, whereas the former takes less than 3 hours per epoch.   
+
+Since most of the weights reside in the embedding layer, the training time depends heavily on the size of the vocabulary and the output dimensionality of the embedding. Other factors are the framework (using CNTK is about twice as fast as Tensorflow) and masking (handling of the padded zeros for variable length sequences), which slows down the training. We have also observed that initializing the embedding with word2vec speeds up significatly the convergence to a good value of accuracy.   
 
 # Implementation details
-
-There are about 2,000,000 trainable weights in the architecture, of which the large majority resides in the embedding layer. Thus the training time depends heavily on the size of the vocabulary and the output dimensionality of the embedding. Other considerations affecting time are the framework (using CNTK is about twice faster than Tensorflow) and masking (handling of the padded zeros with variable length LSTMs), which slows down the training. 
-
-Order docs by number of words
 
 GPU Theano
 
