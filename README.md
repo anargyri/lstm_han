@@ -29,7 +29,7 @@ Using a doc length of 300 words and an embedding dimensionality equal to 200, we
 
 This is the architecture proposed in 
 [Hierarchical Attention Networks for Document Classiﬁcation, Yang, Yang, Dyer, He, Smola & Hovy, 2016](https://www.cs.cmu.edu/~diyiy/docs/naacl16.pdf). One of its main features is the hierarchical structure, which consists of two levels of GRU layers, one for the sequence of words in each sentence, the second for the sequence of sentences in each document. Another feature of the architecture is that it uses an *attention* layer at both the sentence and word levels. The attention mechanism is the one proposed in [Bahdanau, Cho & Bengio, 2014](https://arxiv.org/pdf/1409.0473.pdf) and allows for weighting words in each sentence (and sentences in each document) with different degrees of importance. 
-![han](/images/hatt.png)
+![han](/images/hatt.jpg)
 
 We have implemented the Hierarchical Attention Network in Keras and Theano by adapting 
 [Richard Liao's implementation](https://github.com/richliao/textClassifier/blob/master/textClassifierHATT.py).
