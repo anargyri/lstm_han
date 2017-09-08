@@ -44,7 +44,7 @@ The second layer expands to the following model, which is distributed to all the
 
 # Performance
 
-We have not fine tuned the hyperparameters, but have tried a few values as an indication. With LSTM we obtain a classification accuracy of 54.7% and with the hierarchical attention network we obtain 59%. However, the latter takes about 10 hours per epoch to train, whereas the former takes less than 3 hours per epoch. Prediction takes about 30 minutes for the hierarchical network.  
+We have not fine tuned the hyperparameters, but have tried a few values as an indication. With LSTM we obtain a classification accuracy of 54.7% and with the hierarchical attention network we obtain 59%. However, the latter takes about 10 hours per epoch to train, whereas the former takes less than 3 hours per epoch. Prediction takes about 30 minutes for the hierarchical network and 1.7 hours for LSTM.  
 
 Since most of the weights reside in the embedding layer, the training time depends strongly on the size of the vocabulary and the output dimensionality of the embedding. Other factors are the framework (using CNTK is about twice as fast as Tensorflow) and masking (handling of the padded zeros for variable length sequences), which slows down the training. We have also observed that initializing the embedding with word2vec speeds up significantly the convergence to a good value of accuracy.   
 
