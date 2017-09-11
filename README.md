@@ -11,9 +11,9 @@ There are 3,000,000 training, 650,000 test samples and 5 target classes.
 
 # Preprocessing & Initialization
 
-To generate the inputs to the network from the text data, a preprocessing tokenization step is required. Here we use the `Tokenizer` class from Keras which we fit on the most frequent words in the training data set and we also replace infrequent words with a single token. Thus each document can be represented as a vector of word indexes. A truncation / padding with zeros is then applied so that all vectors have equal length. Masking out these zeros can be specified in the embedding layer of the network, if one wishes so (except in the case of CNTK). 
+To generate the inputs to the network from the text data, a preprocessing tokenization step is required. Here we use the `Tokenizer` class from Keras which we fit on the most frequent words in the training data set and we also replace infrequent words with a single token. Thus each document can be represented as a vector of word indexes. A truncation / padding with zeros is then applied so that all vectors have equal length. Masking out these zeros can be toggled in the first layer of the network, which is an *embedding* layer (except CNTK which does not support masking yet). 
 
-The initialization of the embedding layer of each network can affect the accuracy of the model and the speed of convergence significantly. We opt to use [word2vec](https://arxiv.org/pdf/1301.3781.pdf) with skip-grams to obtain the initial embedding, since it yields better results than the default random initialization. 
+The initialization of the embedding layer of each network can affect the accuracy of the model and the speed of convergence significantly. To compute an initial embedding, we use [word2vec](https://arxiv.org/pdf/1301.3781.pdf) with skip-grams, since it yields better results than the default random initialization. For a more detailed description of word embeddings and word2vec see, for example, this [tutorial](http://adventuresinmachinelearning.com/gensim-word2vec-tutorial/).
 
 
 # LSTM 
@@ -44,7 +44,7 @@ The second layer expands to the following model, which is distributed to all the
 
 # Performance
 
-We have not fine tuned the hyperparameters, but have tried a few values as an indication. With LSTM we obtain a classification accuracy of 54.7% and with the hierarchical attention network we obtain 59%. However, the latter takes about 10 hours per epoch to train, whereas the former takes less than 3 hours per epoch. Prediction takes about 30 minutes for the hierarchical network and 1.7 hours for LSTM.  
+We have not fine tuned the hyperparameters, but have tried a few values as an indication. With LSTM we obtain a classification accuracy of 54.7% and with the hierarchical attention network we obtain 59%. However, the latter takes about 10 hours per epoch to train, whereas the former takes less than 3 hours per epoch. Prediction on the test data set takes about 30 minutes for the hierarchical network and 1.7 hours for LSTM.  
 
 Since most of the weights reside in the embedding layer, the training time depends strongly on the size of the vocabulary and the output dimensionality of the embedding. Other factors are the framework (using CNTK is about twice as fast as Tensorflow) and masking (handling of the padded zeros for variable length sequences), which slows down the training. We have also observed that initializing the embedding with word2vec speeds up significantly the convergence to a good value of accuracy.   
 
