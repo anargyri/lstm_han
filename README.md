@@ -53,7 +53,7 @@ Since most of the weights reside in the embedding layer, the training time depen
 We have trained the models on an Azure NC series Data Science Virtual Machine with Tesla K80 GPUs. In the cases of CNTK and Tensorflow, the framework handles the execution on the GPU automatically. Tensorflow may throw a `ResourceExhaustedError`, due to taking up all the GPU memory. If this error occurs the remedy is to decrease the batch size.
 
 The case of Theano is not so straightforward and requires some manual configuration before executing the code. See the [Theano configuration](http://deeplearning.net/software/theano_versions/0.9.X/library/config.html) and [gpuarray docs](https://github.com/Theano/Theano/wiki/Converting-to-the-new-gpu-back-end%28gpuarray%29) for more details. In brief, the following steps are required:
-1. Ensure the right python dependencies (with `conda install theano pygpu`)
+1. Ensure the right python dependencies (with `conda install pygpu`)
 
 2. Replace $HOME/.theanorc with:
 ```
