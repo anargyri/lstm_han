@@ -42,7 +42,7 @@ The second layer expands to the following model, which is distributed to all the
 
 # Performance
 
-We have not fine tuned the hyperparameters, but have tried a few values as an indication. With LSTM we obtain a classification accuracy of 80% and AUC = 0.88. and with the hierarchical attention network we obtain 88% accuracy and AUC = 0.96. They both take about 1 minute per epoch to train. 
+We have not fine tuned the hyperparameters, but have tried a few values as an indication. With LSTM we obtain a classification accuracy of 80% and AUC = 0.88; with the hierarchical attention network we obtain 88% accuracy and AUC = 0.96. They both take about 1 minute per epoch to train. 
 
 Since most of the weights reside in the embedding layer, the training time depends strongly on the size of the vocabulary and the output dimensionality of the embedding. Other factors are the framework (using CNTK is about twice as fast as Tensorflow) and masking (handling of the padded zeros for variable length sequences), which slows down the training. We have also observed that initializing the embedding with word2vec speeds up significantly the convergence to a good value of accuracy.   
 
