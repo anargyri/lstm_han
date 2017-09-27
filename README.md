@@ -17,7 +17,7 @@ The initialization of the embedding layer of each network can affect the accurac
 
 # LSTM 
 
-The first layer in this architecture is an *embedding* layer, which maps each (one-hot encoded) word index to a vector by a linear transformation. Thus each document vector is mapped to a sequence of output vectors via an embedding matrix (which is learned during training). The output of the embedding layer is fed into a *bidirectional LSTM* layer with 100 units (in each direction). The 5-dimensional output is then obtained with a fully connected layer. This network is optimized with stochastic gradient descent using the cross entropy loss. We also use *l2* regularization in all layers.
+The first layer in this architecture is an *embedding* layer, which maps each (one-hot encoded) word index to a vector by a linear transformation. Thus each document vector is mapped to a sequence of output vectors via an embedding matrix (which is learned during training). The output of the embedding layer is fed into a *bidirectional LSTM* layer with 100 units (in each direction). The output is then obtained with a fully connected layer. This network is optimized with stochastic gradient descent using the cross entropy loss. We also use *l2* regularization in all layers.
 
 Using a document length of 300 words and an embedding dimensionality equal to 200, we obtain a model architecture with 761,202 trainable weights, of which the large majority resides in the embedding layer.
 
@@ -42,7 +42,7 @@ The second layer expands to the following model, which is distributed to all the
 
 # Performance
 
-We have not fine tuned the hyperparameters, but have tried a few values as an indication. With LSTM we obtain a classification accuracy of %80% and AUC = 0.88. and with the hierarchical attention network we obtain 88% accuracy and AUC = 0.96. They both take about 1 minute per epoch to train. 
+We have not fine tuned the hyperparameters, but have tried a few values as an indication. With LSTM we obtain a classification accuracy of 80% and AUC = 0.88. and with the hierarchical attention network we obtain 88% accuracy and AUC = 0.96. They both take about 1 minute per epoch to train. 
 
 Since most of the weights reside in the embedding layer, the training time depends strongly on the size of the vocabulary and the output dimensionality of the embedding. Other factors are the framework (using CNTK is about twice as fast as Tensorflow) and masking (handling of the padded zeros for variable length sequences), which slows down the training. We have also observed that initializing the embedding with word2vec speeds up significantly the convergence to a good value of accuracy.   
 
