@@ -6,8 +6,7 @@ In this repo we demonstrate how to build and train two different neural network 
 
 # Data 
 
-We train this network on documents from the [Amazon reviews data set](https://snap.stanford.edu/data/web-Amazon.html) [*McAuley and Leskovec, Hidden Factors and Hidden Topics: Understanding Rating Dimensions with Review Text, RecSys, 2013*]. The text consists of reviews of different products by users with the labels being the ratings given to the products. We use the extract of this data set from [Zhang et al. 2015](https://papers.nips.cc/paper/5782-character-level-convolutional-networks-for-text-classification.pdf).
-There are 3,000,000 training, 650,000 test samples and 5 target classes.
+We train these networks on documents from the [Internet archive](https://archive.org/details/amazon-reviews-1995-2013), originating from [*McAuley and Leskovec, Hidden Factors and Hidden Topics: Understanding Rating Dimensions with Review Text, RecSys, 2013*]. The text consists of Amazon reviews of food products by users with the labels being the ratings given to the products. In the notebooks, we downsample this data to 10,000 training and 10,000 test samples and convert the ratings to binary labels.
 
 # Preprocessing & Initialization
 
@@ -20,7 +19,7 @@ The initialization of the embedding layer of each network can affect the accurac
 
 The first layer in this architecture is an *embedding* layer, which maps each (one-hot encoded) word index to a vector by a linear transformation. Thus each document vector is mapped to a sequence of output vectors via an embedding matrix (which is learned during training). The output of the embedding layer is fed into a *bidirectional LSTM* layer with 100 units (in each direction). The 5-dimensional output is then obtained with a fully connected layer. This network is optimized with stochastic gradient descent using the cross entropy loss. We also use *l2* regularization in all layers.
 
-Using a document length of 300 words and an embedding dimensionality equal to 200, we obtain a model architecture with 1,442,005 trainable weights, of which the large majority resides in the embedding layer.
+Using a document length of 300 words and an embedding dimensionality equal to 200, we obtain a model architecture with 761,202 trainable weights, of which the large majority resides in the embedding layer.
 
 ![model](/images/lstm_model.png)
 
@@ -32,7 +31,7 @@ This is the architecture proposed in
 
 We have implemented the Hierarchical Attention Network in Keras and Theano by adapting 
 [Richard Liao's implementation](https://github.com/richliao/textClassifier/blob/master/textClassifierHATT.py).
-We use a sentence length of 100 words and a document length of 30 sentences. We set the embedding, context and GRU dimensionalities according to the Hierarchical Attention Network paper. We also follow other choices from this paper, that is, initialize the embedding with word2vec; optimize with SGD and momentum; and reorder the documents in the training batches by number of sentences. We also opt to use *l2* regularization in all layers. In this way we obtain an architecture with 4,141,705 trainable weights.
+We use a sentence length of 50 words and a document length of 15 sentences. We set the embedding, context and GRU dimensionalities according to the Hierarchical Attention Network paper. We also follow other choices from this paper, that is, initialize the embedding with word2vec; optimize with SGD and momentum; and reorder the documents in the training batches by number of sentences. We also opt to use *l2* regularization in all layers. In this way we obtain an architecture with 942,102 trainable weights.
 
 ![model](/images/hatt_model.png)
 
@@ -43,7 +42,7 @@ The second layer expands to the following model, which is distributed to all the
 
 # Performance
 
-We have not fine tuned the hyperparameters, but have tried a few values as an indication. With LSTM we obtain a classification accuracy of 54.7% and with the hierarchical attention network we obtain 59%. However, the latter takes about 10 hours per epoch to train, whereas the former takes less than 3 hours per epoch. Prediction on the test data set takes about 30 minutes for the hierarchical network and 1.7 hours for LSTM.  
+We have not fine tuned the hyperparameters, but have tried a few values as an indication. With LSTM we obtain a classification accuracy of %80% and AUC = 0.88. and with the hierarchical attention network we obtain 88% accuracy and AUC = 0.96. They both take about 1 minute per epoch to train. 
 
 Since most of the weights reside in the embedding layer, the training time depends strongly on the size of the vocabulary and the output dimensionality of the embedding. Other factors are the framework (using CNTK is about twice as fast as Tensorflow) and masking (handling of the padded zeros for variable length sequences), which slows down the training. We have also observed that initializing the embedding with word2vec speeds up significantly the convergence to a good value of accuracy.   
 
