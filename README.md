@@ -2,7 +2,7 @@
 
 # Goal
 
-In this repo we demonstrate how to build and train two different neural network architectures for *classification of text documents*. We show a simple implementation on an [NC series Data Science Virtual Machine](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes-gpu) with [Tesla K80 GPUs](http://www.nvidia.com/object/tesla-k80.html), that uses the [Keras API](https://keras.io) for deep learning. Keras is a front end to three of the most popular deep learning frameworks, CNTK, Tensorflow and Theano. 
+In this repo we demonstrate how to build and train two different neural network architectures for *classification of text documents*. We show a simple implementation on an [NC series Data Science Virtual Machine](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes-gpu) with a [Tesla K80 GPU](http://www.nvidia.com/object/tesla-k80.html), that uses the [Keras API](https://keras.io) for deep learning. Keras is a front end to three of the most popular deep learning frameworks, CNTK, Tensorflow and Theano. 
 
 # Data 
 
@@ -19,7 +19,7 @@ The initialization of the embedding layer of each network can affect the accurac
 
 The first layer in this architecture is an *embedding* layer, which maps each (one-hot encoded) word index to a vector by a linear transformation. Thus each document vector is mapped to a sequence of output vectors via an embedding matrix (which is learned during training). The output of the embedding layer is fed into a *bidirectional LSTM* layer with 100 units (in each direction). The output is then obtained with a fully connected layer. This network is optimized with stochastic gradient descent using the cross entropy loss. We also use *l2* regularization in all layers.
 
-Using a document length of 300 words and an embedding dimensionality equal to 200, we obtain a model architecture with 761,202 trainable weights, of which the large majority resides in the embedding layer.
+Using a document length of 300 words and an embedding dimensionality equal to 100, we obtain a model architecture with 761,202 trainable weights, of which the large majority resides in the embedding layer.
 
 ![model](/images/lstm_model.png)
 
@@ -49,7 +49,7 @@ Since most of the weights reside in the embedding layer, the training time depen
 
 # Implementation details
 
-We have trained the models on an Azure NC series Data Science Virtual Machine with Tesla K80 GPUs. In the cases of CNTK and Tensorflow, the framework handles the execution on the GPU automatically. Tensorflow may throw a `ResourceExhaustedError`, due to taking up all the GPU memory. If this error occurs the remedy is to decrease the batch size.
+We have trained the models on an Azure NC series Data Science Virtual Machine with a Tesla K80 GPU. In the cases of CNTK and Tensorflow, the framework handles the execution on the GPU automatically. Tensorflow may throw a `ResourceExhaustedError`, due to taking up all the GPU memory. If this error occurs the remedy is to decrease the batch size.
 
 The case of Theano is not so straightforward and requires some manual configuration before executing the code. See the [Theano configuration](http://deeplearning.net/software/theano_versions/0.9.X/library/config.html) and [gpuarray docs](https://github.com/Theano/Theano/wiki/Converting-to-the-new-gpu-back-end%28gpuarray%29) for more details. In brief, the following steps are required:
 1. Ensure the right python dependencies (with `conda install pygpu`)
