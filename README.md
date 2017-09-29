@@ -2,7 +2,7 @@
 
 # Goal
 
-In this repo we demonstrate how to build and train two different neural network architectures for *classification of text documents*. We show a simple implementation on an [NC series Data Science Virtual Machine](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes-gpu) with a [Tesla K80 GPU](http://www.nvidia.com/object/tesla-k80.html), that uses the [Keras API](https://keras.io) for deep learning. Keras is a front end to three of the most popular deep learning frameworks, CNTK, Tensorflow and Theano. 
+In this repo we demonstrate how to build and train two different neural network architectures for *classification of text documents*. We show a simple implementation on an [NC series Data Science Virtual Machine](https://aka.ms/dsvm/ubuntu) with a [Tesla K80 GPU](http://www.nvidia.com/object/tesla-k80.html), that uses the [Keras API](https://keras.io) for deep learning. Keras is a front end to three of the most popular deep learning frameworks, CNTK, Tensorflow and Theano. 
 
 # Data 
 
@@ -21,23 +21,23 @@ The first layer in this architecture is an *embedding* layer, which maps each (o
 
 Using a document length of 300 words and an embedding dimensionality equal to 100, we obtain a model architecture with 761,202 trainable weights, of which the large majority resides in the embedding layer.
 
-![model](/images/lstm_model.png)
+![model](https://raw.githubusercontent.com/anargyri/lstm_han/master/images/lstm_model.png)
 
 
 # Hierarchical Attention Network
 
 This is the architecture proposed in 
-[Hierarchical Attention Networks for Document Classiﬁcation, Yang et al. 2016](https://www.cs.cmu.edu/~diyiy/docs/naacl16.pdf). One of its main features is the hierarchical structure, which consists of two levels of bidirectional GRU layers, one for the sequence of words in each sentence, the second for the sequence of sentences in each document. Another feature of the architecture is that it uses an *attention* layer at both the sentence and word levels. The attention mechanism is the one proposed in [Bahdanau et al. 2014](https://arxiv.org/pdf/1409.0473.pdf) and allows for weighting words in each sentence (and sentences in each document) with different degrees of importance according to the context. 
+[Hierarchical Attention Networks for Document Classification, Yang et al. 2016](https://www.cs.cmu.edu/~diyiy/docs/naacl16.pdf). One of its main features is the hierarchical structure, which consists of two levels of bidirectional GRU layers, one for the sequence of words in each sentence, the second for the sequence of sentences in each document. Another feature of the architecture is that it uses an *attention* layer at both the sentence and word levels. The attention mechanism is the one proposed in [Bahdanau et al. 2014](https://arxiv.org/pdf/1409.0473.pdf) and allows for weighting words in each sentence (and sentences in each document) with different degrees of importance according to the context.
 
 We have implemented the Hierarchical Attention Network in Keras and Theano by adapting 
 [Richard Liao's implementation](https://github.com/richliao/textClassifier/blob/master/textClassifierHATT.py).
 We use a sentence length of 50 words and a document length of 15 sentences. We set the embedding, context and GRU dimensionalities according to the Hierarchical Attention Network paper. We also follow other choices from this paper, that is, initialize the embedding with word2vec; optimize with SGD and momentum; and reorder the documents in the training batches by number of sentences. We also opt to use *l2* regularization in all layers. In this way we obtain an architecture with 942,102 trainable weights.
 
-![model](/images/hatt_model.png)
+![model](https://raw.githubusercontent.com/anargyri/lstm_han/master/images/hatt_model.png)
 
 The second layer expands to the following model, which is distributed to all the sentences:
 
-![sent_model](/images/hatt_model_sent.png)
+![sent_model](https://raw.githubusercontent.com/anargyri/lstm_han/master/images/hatt_model_sent.png)
 
 
 # Performance
