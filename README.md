@@ -10,7 +10,7 @@ We train these networks on documents from the [Internet archive](https://archive
 
 # Preprocessing & Initialization
 
-To generate the inputs to the network from the text data, a preprocessing tokenization step is required. Here we use the `Tokenizer` class from Keras which we fit on the most frequent words in the training data set and we also replace infrequent words with a single token. Thus each document can be represented as a vector of word indexes. A truncation / padding with zeros is then applied so that all vectors have equal length. Masking out these zeros can be toggled in the first layer of the network, which is an *embedding* layer (except CNTK which does not support masking yet). 
+To generate the inputs to the network from the text data, a preprocessing tokenization step is required. Here we use the `Tokenizer` class from Keras which we fit on the most frequent words in the training data set and we also replace infrequent words with a single token. Thus each document can be represented as a vector of word indexes. A truncation / padding with zeros is then applied so that all vectors have equal length. Masking out these zeros can be toggled in the first layer of the network, which is an *embedding* layer. 
 
 The initialization of the embedding layer of each network can affect the accuracy of the model and the speed of convergence significantly. To compute an initial embedding, we use [word2vec](https://arxiv.org/pdf/1301.3781.pdf) with skip-grams, since it yields better results than the default random initialization. For a more detailed description of word embeddings and word2vec see, for example, this [tutorial](http://adventuresinmachinelearning.com/gensim-word2vec-tutorial/).
 
@@ -42,7 +42,7 @@ The second layer expands to the following model, which is distributed to all the
 
 # Performance
 
-We have not fine tuned the hyperparameters, but have tried a few values as an indication. With LSTM we obtain a classification accuracy of 80% and AUC = 0.88; with the hierarchical attention network we obtain 88% accuracy and AUC = 0.96. They both take about 1 minute per epoch to train. 
+We have not fine tuned the hyperparameters, but have tried a few values as an indication. With LSTM we obtain a classification accuracy of 80% and AUC = 0.88; with the hierarchical attention network we obtain 89% accuracy and AUC = 0.96. They both take about 1 minute per epoch to train. 
 
 Since most of the weights reside in the embedding layer, the training time depends strongly on the size of the vocabulary and the output dimensionality of the embedding. Other factors are the framework (using CNTK is about twice as fast as Tensorflow) and masking (handling of the padded zeros for variable length sequences), which slows down the training. We have also observed that initializing the embedding with word2vec speeds up significantly the convergence to a good value of accuracy.   
 
